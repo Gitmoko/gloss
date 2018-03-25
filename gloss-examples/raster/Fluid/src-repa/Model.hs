@@ -36,6 +36,7 @@ type Rate       = Float
 
 
 -- | A 2d field.
+-- | 汎用的な2dデータ型。aはスカラー値だったりベクトルだったりする
 type Field a        
         = Array U DIM2 a
 
@@ -55,6 +56,7 @@ data CurrentButton
         | None
 
 -- | A density source added by the user.
+-- | GUI側から入力した値を保持する型。Densityという名前だがスカラーもベクトルもこれで保持する
 data SourceDensity a
         = SourceDensity DIM2 a
 
@@ -64,12 +66,12 @@ data SourceDensity a
 data Model
         = Model
         { densityField   :: DensityField
-        , densitySource  :: Maybe (SourceDensity Float)
+        , densitySource  :: Maybe (SourceDensity Float) -- ^GUIからの入力密度
         , velocityField  :: VelocityField
-        , velocitySource :: Maybe (SourceDensity (Float, Float))
-        , clickLoc       :: Maybe (Int, Int)
+        , velocitySource :: Maybe (SourceDensity (Float, Float)) -- ^GUIからの入力速度
+        , clickLoc       :: Maybe (Int, Int) -- ^クリック押し込み時の座標。userevent関数で,GUI上のベクトル値入力に使う
         , stepsPassed    :: Int
-        , currButton     :: CurrentButton
+        , currButton     :: CurrentButton -- ^現在のマウス状態。userevent関数で使う
         , drawVelocity   :: Bool
         }
 

@@ -14,15 +14,15 @@ import Config
 -- import Stage.Boundary
 velocitySteps 
         :: Config
-        -> Int
-        -> VelocityField 
-        -> Maybe (SourceDensity (Float, Float)) 
-        -> IO VelocityField
+        -> Int -- ^つかってない
+        -> VelocityField -- ^前のフレームの速度場
+        -> Maybe (SourceDensity (Float, Float)) -- ^Interactiveモードで、GUI上で指定された位置に源が現れる。Batchモードだと常にNothing
+        -> IO VelocityField -- ^更新後の速度場
 
 velocitySteps config _step vf vs 
  = {-# SCC "Solve.velocitySteps" #-}
    do   
-        vf1     <- addSources   (configDelta config) (configVelocity config)  
+        vf1     <- addSources   (configDelta config) (configVelocity config)  --GUI上で指定したSourceDensityを加える
                                 vs vf
 
         let diffSolver = DiffStable (configIters config)

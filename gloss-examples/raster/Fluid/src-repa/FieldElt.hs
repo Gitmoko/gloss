@@ -3,6 +3,8 @@
 -- | Field operations 
 module FieldElt where
 
+-- | 型引数aにはスカラーやベクトル(タプル)が入る。
+-- 密度場も速度場も同じ演算子で扱えるようにするため。 
 class Show a => FieldElt a where
         zero      :: a
 
