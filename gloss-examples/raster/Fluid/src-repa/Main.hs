@@ -25,15 +25,18 @@ import Prelude                     as P
 main :: IO ()
 main 
  = do   -- Parse the command-line arguments.
+        -- コマンドラインからオプションを渡す.configDefaultはデフォルトのオプション値
         args                    <- getArgs
         config                  <- parseArgs args configDefault
 
         -- Setup the initial fluid model.
+        -- モデル初期化
         let model       = initModel
                                 (configInitialDensity  config)
                                 (configInitialVelocity config)
 
         performGC
+        --　configBatchModeでGUIで動かすかCUIで動かすか変える
         case configBatchMode config of
          False -> runInteractive config model
          True  
@@ -43,7 +46,9 @@ main
 
 
 -- | Run the simulation interactively.
-runInteractive :: Config -> Model -> IO ()
+-- GUI上でのシミュレーション
+runInteractive 
+              :: Config -> Model -> IO ()
 runInteractive config model0
  = let (scaleX, scaleY)  = configScale config
    in  playIO  (InWindow "Stam's stable fluid. Use left-click right-drag to add density / velocity." 
@@ -58,6 +63,7 @@ runInteractive config model0
 
 
 -- | Run in batch mode and dump a .bmp of the final state.
+-- | 指定した回数stepFluidを実行する
 runBatchMode :: Config -> Model -> IO ()
 runBatchMode config model
   | stepsPassed model     >= configMaxSteps config
@@ -75,8 +81,12 @@ runBatchMode config model
         runBatchMode config model'
 
 
--- Function to step simulator one step forward in time
-stepFluid :: Config -> Model -> IO Model
+-- | Function to step simulator one step forward in time
+-- シミュレーションの核の関数。速度について計算した後、密度について計算するというステップで動いている
+stepFluid 
+         :: Config -- ^オプションの値
+         -> Model  -- ^前のステップのモデルデータ
+         -> IO Model -- ^1ステップ後のモデルデータ
 stepFluid config m@(Model df ds vf vs cl step dv cb)
   | step                  >= configMaxSteps config
   , configMaxSteps config >  0  

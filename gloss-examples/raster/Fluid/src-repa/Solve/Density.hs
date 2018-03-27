@@ -9,13 +9,14 @@ import Config
 import Model
 
 -- | Run the stages for processing the density field in one time step
+-- | 密度場の計算
 densitySteps 
-        :: Config
-        -> Int
-        -> DensityField 
-        -> Maybe (SourceDensity Float) 
-        -> VelocityField 
-        -> IO DensityField
+        :: Config -- ^オプションの値
+        -> Int -- ^　現在のステップ数。拡散係数がこの値のステップ数を境に変わる
+        -> DensityField  -- ^密度場
+        -> Maybe (SourceDensity Float) -- ^GUI上での密度入力。BatchモードだつねにNothing
+        -> VelocityField -- ^ 速度場
+        -> IO DensityField -- ^ 計算結果の密度場
 
 densitySteps config step df ds vf 
  = {-# SCC "Solve.densitySteps" #-}

@@ -14,14 +14,15 @@ import Prelude as P
 
 
 -------------------------------------------------------------------------------
+-- |陰解法で偏微分方程式を解く
 linearSolver 
         :: (FieldElt a, Source U a, Unbox a, Elt a, Num a)
-        => Field a      -- ^ Original field.
-        -> Field a      -- ^ Current field.
-        -> Float
-        -> Float
+        => Field a      -- ^ 計算前の場
+        -> Field a      -- ^ 反復法における次ステップの場
+        -> Float        -- ^ 拡散係数
+        -> Float        -- ^ 中心セル
         -> Int          -- ^ Number of iterations to apply.
-        -> IO (Field a)
+        -> IO (Field a) -- ^ 計算結果の場
 
 linearSolver origField curField !a !c !iters
         -- If nothing would change by running the solver, then skip it.
@@ -88,6 +89,7 @@ linearSolverCoeffs (Z:.j:.i)
 
 
 -- Unstable -------------------------------------------------------------------
+-- | 陽解法で偏微分方程式をとく
 unstableSolver 
         :: (FieldElt a, Source U a, Unbox a, Elt a, Num a)
         => Field a      -- ^ Original field.

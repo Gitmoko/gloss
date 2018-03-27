@@ -10,20 +10,20 @@ import Data.Array.Repa          as R
 import Data.Array.Repa.Eval     as R
 import Data.Vector.Unboxed
 
-
+-- ^陰解法か陽解法のどちらを使うかのデータ
 data DiffSolver
-        = DiffStable Int
+        = DiffStable Int -- ^ IntはSolver.hsのlineraSolverに渡す、陰解法の中で使う反復法のステップ回数
         | DiffUnstable
 
 
 -- | Diffuse a field at a certain rate.
 diffusion 
         :: (FieldElt a, Num a, Elt a, Unbox a) 
-        => DiffSolver
-        -> Delta 
-        -> Rate
-        -> Field a 
-        -> IO (Field a)
+        => DiffSolver -- ^陰解法か陽解法か
+        -> Delta  -- ^1ステップで流れるシミュレーション空間での時間
+        -> Rate -- ^拡散係数 ConfigのconfigDiff
+        -> Field a -- ^計算前の場 
+        -> IO (Field a) -- ^ 計算後の場
 diffusion !solver !delta !rate field 
  = {-# SCC diffusion #-}
    field `deepSeqArray`  

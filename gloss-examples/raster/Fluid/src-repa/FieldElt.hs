@@ -30,7 +30,7 @@ class Show a => FieldElt a where
         --   to False get zero.
         useIf     :: Bool -> a     -> a
 
-
+-- | スカラー場について演算を定義
 instance FieldElt Float where
         zero = 0
         {-# INLINE zero #-}
@@ -58,7 +58,7 @@ instance FieldElt Float where
         useIf False _ = 0
         {-# INLINE useIf #-}
 
-
+-- | ベクトル場についての演算を定義
 instance FieldElt (Float, Float) where
         zero = (0, 0)
         {-# INLINE zero #-}

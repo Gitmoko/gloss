@@ -41,10 +41,12 @@ type Field a
         = Array U DIM2 a
 
 -- | Scalar density field.
+-- 密度場
 type DensityField   
         = Field Float
 
 -- | Vector velocity field.
+-- 速度場
 type VelocityField  
         = Field (Float, Float)
 

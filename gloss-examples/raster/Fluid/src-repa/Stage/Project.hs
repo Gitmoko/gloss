@@ -10,7 +10,11 @@ import Data.Array.Repa.Unsafe   as R
 import Prelude                  as P
 
 
-project :: Int -> Field (Float, Float) -> IO (Field (Float, Float))
+-- ^ 質量保存を満たすように速度場を調整する
+project 
+       :: Int 
+       -> Field (Float, Float) -- ^ 計算前の速度場
+       -> IO (Field (Float, Float)) -- ^ 計算後の速度場
 project iters field
  = {-# SCC project #-}
    field `deepSeqArray` 

@@ -11,12 +11,13 @@ import Data.Vector.Unboxed      (Unbox)
 
 -- | Apply a velocity field to another field.
 --   Both fields must have the same extent.
+-- 移流の計算.型引数aにより、スカラーやベクトルの移流の計算を統一している
 advection 
-        :: (FieldElt a, Unbox a)
-        => Delta
-        -> VelocityField 
-        -> Field a 
-        -> IO (Field a)
+        :: (FieldElt a, Unbox a) 
+        => Delta -- ^ 1ステップで流れるシミュレーション上での時間
+        -> VelocityField -- ^現在の速度場
+        -> Field a -- ^計算する物理量の計算前の場
+        -> IO (Field a)-- ^ 物理量の計算後の場
 
 advection !delta velField field
  = {-# SCC "advection" #-} 
